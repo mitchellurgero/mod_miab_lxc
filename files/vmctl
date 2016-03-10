@@ -1,0 +1,46 @@
+#!/bin/bash
+VMNAME=$1
+TYPE=$2
+
+if [[ -z "$TYPE" ]]
+then
+	if [ "$VMNAME" =  "list" ]
+	then
+		TYPE="list"
+	fi
+fi
+case $TYPE in
+	start)
+		lxc-start -n $VMNAME -d
+		;;
+	stop)
+		lxc-stop -n $VMNAME
+		;;
+	restart)
+		lxc-stop -n $VMNAME
+		lxc-start -n $VMNAME -d
+		;;
+	console)
+		lxc-console -n $VMNAME
+		;;
+	list)
+		lxc-ls -f
+		;;
+	info)
+		lxc-info -n $VMNAME
+		;;
+	create)
+		echo "Creating LXC $VMNAME using the Ubuntu Template..."
+		lxc-create -n $VMNAME -t ubuntu
+		;;
+	destroy)
+		echo "Destroying LXC $VMNAME..."
+		lxc-destroy -n $VMANME
+		;;
+*)
+	echo $"Usage: $0 LXC_NAME {start|stop|restart|console|list|info|create|destroy}"
+	exit 1
+
+esac
+
+exit 0

@@ -47,8 +47,19 @@ esac
 echo "Installing LXC..."
 
 # apt_install lxc
+
+
 ## Create a basic machine from an ubuntu template...
 echo "Create first example machine..."
+## Chack to make sure the machine does not exist...
+if [ -f /var/lib/lxc/miablxc1/config ]; then
+	echo "Example lxc already exists! Not overwriting the current lxc."
+	echo "Looks like the installer completed, please be sure to note errors (if any)."
+	echo
+	echo "Good-Bye!"
+	echo 
+	exit 0
+fi
 # hide_output lxc-create -t ubuntu -n "miablxc1"
 
 
@@ -56,3 +67,4 @@ echo "Looks like the installer completed, please be sure to note errors (if any)
 echo
 echo "Good-Bye!"
 echo 
+exit 0
