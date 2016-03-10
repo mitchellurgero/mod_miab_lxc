@@ -26,6 +26,9 @@ function hide_output {
 	# Remove temporary file.
 	rm -f $OUTPUT
 }
+function apt_update {
+	hide_output apt-get update
+}
 
 function apt_get_quiet {
 	# Run apt-get in a totally non-interactive mode.
@@ -128,13 +131,6 @@ function get_default_privateip {
 		
 }
 
-function ufw_allow {
-	if [ -z "$DISABLE_FIREWALL" ]; then
-		# ufw has completely unhelpful output
-		ufw allow $1 > /dev/null;
-	fi
-}
-
 function restart_service {
 	hide_output service $1 restart
 }
@@ -151,17 +147,6 @@ function input_box {
 	declare -n result=$4
 	declare -n result_code=$4_EXITCODE
 	result=$(dialog --stdout --title "$1" --inputbox "$2" 0 0 "$3")
-	result_code=$?
-}
-
-function input_menu {
-	# input_menu "title" "prompt" "tag item tag item" VARIABLE
-	# The user's input will be stored in the variable VARIABLE.
-	# The exit code from dialog will be stored in VARIABLE_EXITCODE.
-	declare -n result=$4
-	declare -n result_code=$4_EXITCODE
-	local IFS=^$'\n'
-	result=$(dialog --stdout --title "$1" --menu "$2" 0 0 0 $3)
 	result_code=$?
 }
 
@@ -187,22 +172,5 @@ function wget_verify {
 	fi
 }
 
-function git_clone {
-	# Clones a git repository, checks out a particular commit or tag,
-	# and moves the repository (or a subdirectory in it) to some path.
-	# We use separate clone and checkout because -b only supports tags
-	# and branches, but we sometimes want to reference a commit hash
-	# directly when the repo doesn't provide a tag.
-	REPO=$1
-	TREEISH=$2
-	SUBDIR=$3
-	TARGETPATH=$4
-	TMPPATH=/tmp/git-clone-$$
-	rm -rf $TMPPATH $TARGETPATH
-	git clone -q $REPO $TMPPATH || exit 1
-	(cd $TMPPATH; git checkout -q $TREEISH;) || exit 1
-	mv $TMPPATH/$SUBDIR $TARGETPATH
-	rm -rf $TMPPATH
-}
 
 
