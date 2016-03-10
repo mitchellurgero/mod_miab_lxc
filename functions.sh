@@ -1,3 +1,6 @@
+
+## Functions sourced from https://github.com/mail-in-a-box/mailinabox
+
 function hide_output {
 	# This function hides the output of a command unless the command fails
 	# and returns a non-zero exit code.
