@@ -60,9 +60,14 @@ if [ -f /var/lib/lxc/miablxc1/config ]; then
 	echo 
 	exit 0
 fi
+
+
 # hide_output lxc-create -t ubuntu -n "miablxc1"
-
-
+echo
+echo
+echo "The default username is: ubuntu, and the default password is: ubuntu."
+echo "Please change this when you login to the lxc to prevent any security risk!"
+echo
 echo "Looks like the installer completed, please be sure to note errors (if any)."
 echo
 echo "Good-Bye!"
